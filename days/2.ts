@@ -1,6 +1,6 @@
 import path from "path";
 const day = path.basename(import.meta.file, ".ts");
-console.log(`Day ${day}`)
+console.log(`Day ${day}`);
 const lines = (await Bun.file(`./inputs/${day}.txt`).text()).split("\n");
 
 const tests = `Game 1: 3 blue, 4 red; 1 red, 2 green, 6 blue; 2 green
