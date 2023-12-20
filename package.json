@@ -1,0 +1,16 @@
+{
+  "name": "advent23",
+  "module": "index.ts",
+  "type": "module",
+  "scripts": {
+    "next": "bun run utils/create.ts",
+    "latest": "bun run utils/runLatest.ts",
+    "all": "bun run utils/runAll.ts"
+  },
+  "devDependencies": {
+    "bun-types": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  }
+}
