@@ -139,7 +139,7 @@ const compareHands = (handA: Hand, handB: Hand, usingJokers: boolean = false): n
 const scores = hands.sort(compareHands).map(({bid}, index)=>bid*(index+1))
 const total = scores.reduce((total, score) => total+score, 0)
 
-// console.log(`Answer Part A: ${total}`)
+console.log(`Answer Part A: ${total}`)
 
 const rankHandFlex = (hand: string[]): Rank => {
     const handCount = countHand(hand)
