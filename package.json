@@ -5,7 +5,8 @@
   "scripts": {
     "next": "bun run utils/create.ts",
     "latest": "bun run utils/runLatest.ts",
-    "all": "bun run utils/runAll.ts"
+    "all": "bun run utils/runAll.ts",
+    "tidy": "bunx prettier --write ."
   },
   "devDependencies": {
     "bun-types": "latest"

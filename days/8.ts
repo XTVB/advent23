@@ -1,7 +1,7 @@
-import path from "path";
-const day = path.basename(import.meta.file, ".ts");
-console.log(`Day ${day}`);
-const input = (await Bun.file(`./inputs/${day}.txt`).text());
+import path from "path"
+const day = path.basename(import.meta.file, ".ts")
+console.log(`Day ${day}`)
+const input = await Bun.file(`./inputs/${day}.txt`).text()
 
 const inputA = `RL
 
@@ -32,50 +32,52 @@ XXX = (XXX, XXX)`
 
 const instrReg = /([RL]+)/g
 
-const directions = instrReg.exec(input)?.[0] ?? ''
+const directions = instrReg.exec(input)?.[0] ?? ""
 // console.log(directions)
 
 const nodeReg = /(?:(\w{3}) = \((\w{3}), (\w{3})\))/g
 
-type Nodes = Record<string, {left: string, right: string}>
+type Nodes = Record<string, { left: string; right: string }>
 
 const nodes: Nodes = {}
 let nodeArray
 while ((nodeArray = nodeReg.exec(input)) !== null) {
-    const [_, node, left, right] = nodeArray
-    nodes[node] = {
-        left,
-        right
-    }
+  const [_, node, left, right] = nodeArray
+  nodes[node] = {
+    left,
+    right,
+  }
 }
 // console.log(nodes)
 
 const nextNode = (nodes: Nodes, source: string, direction: string): string => {
-    const {left, right} = nodes[source]
-    return direction === 'L' ? left : right
+  const { left, right } = nodes[source]
+  return direction === "L" ? left : right
 }
 
 const countSteps = (
-    nodes: Nodes, 
-    directions: string, 
-    startingNode: string = 'AAA', 
-    completeFn: (node: string) => boolean = (node: string) => node === 'ZZZ'
+  nodes: Nodes,
+  directions: string,
+  startingNode: string = "AAA",
+  completeFn: (node: string) => boolean = (node: string) => node === "ZZZ",
 ): number => {
-    let node = startingNode, count = 0, directionIndex = 0;
-    while (!completeFn(node)) {
-        let direction = directions[directionIndex];
-        count += 1;
-        node = nextNode(nodes, node, direction);
-        directionIndex = directions.length === directionIndex + 1 ? 0 : directionIndex + 1;
-    }
-    return count;
+  let node = startingNode,
+    count = 0,
+    directionIndex = 0
+  while (!completeFn(node)) {
+    let direction = directions[directionIndex]
+    count += 1
+    node = nextNode(nodes, node, direction)
+    directionIndex = directions.length === directionIndex + 1 ? 0 : directionIndex + 1
+  }
+  return count
 }
 
 const steps = countSteps(nodes, directions)
 
 console.log(`Answer Part A: ${steps}`)
 
-const startingNodes = Object.keys(nodes).filter(node=>node.endsWith('A'))
+const startingNodes = Object.keys(nodes).filter((node) => node.endsWith("A"))
 
 // console.log(startingNodes)
 
@@ -99,11 +101,13 @@ const startingNodes = Object.keys(nodes).filter(node=>node.endsWith('A'))
 
 // instead you need to recognise that they're all different valued loops and calculate the lcm
 // calculate the lowest common multiple using the formula for greatest common divisor (thank you internet)
-const gcd = (a: number, b: number): number => a ? gcd(b % a, a) : b;
+const gcd = (a: number, b: number): number => (a ? gcd(b % a, a) : b)
 
-const lcm = (a: number, b: number) => a * b / gcd(a, b);
+const lcm = (a: number, b: number) => (a * b) / gcd(a, b)
 
-const ghostSteps = startingNodes.map(starting=>countSteps(nodes, directions, starting, (node: string) => node.endsWith('Z')))
+const ghostSteps = startingNodes.map((starting) =>
+  countSteps(nodes, directions, starting, (node: string) => node.endsWith("Z")),
+)
 const stepsConvergeAt = ghostSteps.reduce(lcm)
 
-console.log(`Answer Part B: ${stepsConvergeAt}`);
+console.log(`Answer Part B: ${stepsConvergeAt}`)

@@ -1,8 +1,8 @@
-import path from "path";
-import { isDefined } from "../utils/isDefined";
-const day = path.basename(import.meta.file, ".ts");
-console.log(`Day ${day}`);
-const input = await Bun.file(`./inputs/${day}.txt`).text();
+import path from "path"
+import { isDefined } from "../utils/isDefined"
+const day = path.basename(import.meta.file, ".ts")
+console.log(`Day ${day}`)
+const input = await Bun.file(`./inputs/${day}.txt`).text()
 
 const test = `seeds: 79 14 55 13
 
@@ -36,9 +36,9 @@ temperature-to-humidity map:
 
 humidity-to-location map:
 60 56 37
-56 93 4`;
+56 93 4`
 
-const mappingsFinder = /(?:(?:\w+\-)+\w+ map:\n)((?:(?:\d+ ){2}\d+\n?)+)/g;
+const mappingsFinder = /(?:(?:\w+\-)+\w+ map:\n)((?:(?:\d+ ){2}\d+\n?)+)/g
 
 type SourceRange = {
   sourceStart: number
@@ -54,7 +54,7 @@ const tempToHumidity: SourceRange[] = []
 const humidityToLoc: SourceRange[] = []
 
 let mapIndex = 0
-let mapArray;
+let mapArray
 let target: SourceRange[]
 
 while ((mapArray = mappingsFinder.exec(input)) !== null) {
@@ -81,29 +81,31 @@ while ((mapArray = mappingsFinder.exec(input)) !== null) {
       target = humidityToLoc
       break
   }
-  mapArray[1].trim().split('\n').map(line => {
-    const [dest, source, range] = line.split(' ')
-    target.push({
-      sourceStart: parseInt(source),
-      destinationStart: parseInt(dest),
-      range: parseInt(range),
+  mapArray[1]
+    .trim()
+    .split("\n")
+    .map((line) => {
+      const [dest, source, range] = line.split(" ")
+      target.push({
+        sourceStart: parseInt(source),
+        destinationStart: parseInt(dest),
+        range: parseInt(range),
+      })
     })
-  })
   mapIndex += 1
 }
 
 const getDest = (key: number, mapper: SourceRange[]) => {
-  const {sourceStart, destinationStart} = mapper.find(({sourceStart, range}) => {
-    // console.log(`start: ${sourceStart} range: ${range} key: ${key} moreThan: ${key >= sourceStart} lessthan: ${key <= sourceStart + range}`)
-    return key >= sourceStart && key <= sourceStart + range
-  }) ?? {}
+  const { sourceStart, destinationStart } =
+    mapper.find(({ sourceStart, range }) => {
+      // console.log(`start: ${sourceStart} range: ${range} key: ${key} moreThan: ${key >= sourceStart} lessthan: ${key <= sourceStart + range}`)
+      return key >= sourceStart && key <= sourceStart + range
+    }) ?? {}
 
-  const val = isDefined(sourceStart) && isDefined(destinationStart)
-   ? destinationStart + (key - sourceStart) 
-   : key
+  const val = isDefined(sourceStart) && isDefined(destinationStart) ? destinationStart + (key - sourceStart) : key
   // console.log(`${key} to ${val}`)
   // if (sourceStart) {
-    // console.log(`sourceStart: ${sourceStart} dest: ${destinationStart} key: ${key}`)
+  // console.log(`sourceStart: ${sourceStart} dest: ${destinationStart} key: ${key}`)
   // }
   return val
 }
@@ -111,23 +113,16 @@ const getDest = (key: number, mapper: SourceRange[]) => {
 const getLocation = (seed: number) => {
   return getDest(
     getDest(
-      getDest(
-        getDest(
-          getDest(
-            getDest(
-              getDest(seed, seedToSoil), soilToFert
-            ), fertToWater
-          ), waterToLight
-        ), lightToTemp
-      ), tempToHumidity
-    ), humidityToLoc
+      getDest(getDest(getDest(getDest(getDest(seed, seedToSoil), soilToFert), fertToWater), waterToLight), lightToTemp),
+      tempToHumidity,
+    ),
+    humidityToLoc,
   )
 }
 
-
 const seedFinder = /(?:seeds:) (?<seeds>.*)/g
-const seedsLine = seedFinder.exec(input)?.groups?.seeds ?? ''
-const seedIndexes = seedsLine.split(' ').map(x=> parseInt(x))
+const seedsLine = seedFinder.exec(input)?.groups?.seeds ?? ""
+const seedIndexes = seedsLine.split(" ").map((x) => parseInt(x))
 // console.log(seedIndexes)
 
 // const min = seedIndexes.map(seed => {
@@ -137,18 +132,17 @@ const seedIndexes = seedsLine.split(' ').map(x=> parseInt(x))
 // }).reduce((min, current) => Math.min(min, current), Number.MAX_VALUE)
 const min = seedIndexes.reduce((min, seed) => Math.min(getLocation(seed), min), Number.MAX_VALUE)
 
-console.log(`Answer Part A: ${min}`);
+console.log(`Answer Part A: ${min}`)
 
 // Reverse method
 
 const getSource = (key: number, mapper: SourceRange[]) => {
-  const {sourceStart, destinationStart} = mapper.find(({destinationStart, range}) => {
-    return key >= destinationStart && key <= destinationStart + range
-  }) ?? {}
+  const { sourceStart, destinationStart } =
+    mapper.find(({ destinationStart, range }) => {
+      return key >= destinationStart && key <= destinationStart + range
+    }) ?? {}
 
-  const val = isDefined(sourceStart) && isDefined(destinationStart)
-   ? sourceStart + (key - destinationStart) 
-   : key
+  const val = isDefined(sourceStart) && isDefined(destinationStart) ? sourceStart + (key - destinationStart) : key
   return val
 }
 
@@ -156,35 +150,32 @@ const getSeed = (location: number) => {
   return getSource(
     getSource(
       getSource(
-        getSource(
-          getSource(
-            getSource(
-              getSource(location, humidityToLoc), tempToHumidity
-            ), lightToTemp
-          ), waterToLight
-        ), fertToWater
-      ), soilToFert
-    ), seedToSoil
+        getSource(getSource(getSource(getSource(location, humidityToLoc), tempToHumidity), lightToTemp), waterToLight),
+        fertToWater,
+      ),
+      soilToFert,
+    ),
+    seedToSoil,
   )
 }
 
-const seedRanges = [...seedsLine.matchAll(/(?:\d+ \d+)/g)].map(line => {
-  const [start, range] = line[0].split(' ')
+const seedRanges = [...seedsLine.matchAll(/(?:\d+ \d+)/g)].map((line) => {
+  const [start, range] = line[0].split(" ")
   return {
     start: parseInt(start),
-    range: parseInt(range)
+    range: parseInt(range),
   }
 })
 
 const isInSeedRange = (location: number) => {
   const seed = getSeed(location)
-  return !!seedRanges.find(({start, range}) => seed >= start && seed <= start + range)
+  return !!seedRanges.find(({ start, range }) => seed >= start && seed <= start + range)
 }
 
 // normally start at 0, because I know the answer start at 84206668 for speed
 let realMin = 84206668
 while (!isInSeedRange(realMin)) {
-  realMin+=1
+  realMin += 1
 }
 
-console.log(`Answer Part B: ${realMin}`);
+console.log(`Answer Part B: ${realMin}`)
