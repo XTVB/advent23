@@ -1,6 +1,6 @@
-import path from "path"
-import { isDefined } from "../utils/isDefined"
-const day = path.basename(import.meta.file, ".ts")
+import path from 'path'
+import { isDefined } from '../utils/isDefined'
+const day = path.basename(import.meta.file, '.ts')
 console.log(`Day ${day}`)
 const input = await Bun.file(`./inputs/${day}.txt`).text()
 
@@ -83,9 +83,9 @@ while ((mapArray = mappingsFinder.exec(input)) !== null) {
   }
   mapArray[1]
     .trim()
-    .split("\n")
+    .split('\n')
     .map((line) => {
-      const [dest, source, range] = line.split(" ")
+      const [dest, source, range] = line.split(' ')
       target.push({
         sourceStart: parseInt(source),
         destinationStart: parseInt(dest),
@@ -121,8 +121,8 @@ const getLocation = (seed: number) => {
 }
 
 const seedFinder = /(?:seeds:) (?<seeds>.*)/g
-const seedsLine = seedFinder.exec(input)?.groups?.seeds ?? ""
-const seedIndexes = seedsLine.split(" ").map((x) => parseInt(x))
+const seedsLine = seedFinder.exec(input)?.groups?.seeds ?? ''
+const seedIndexes = seedsLine.split(' ').map((x) => parseInt(x))
 // console.log(seedIndexes)
 
 // const min = seedIndexes.map(seed => {
@@ -160,7 +160,7 @@ const getSeed = (location: number) => {
 }
 
 const seedRanges = [...seedsLine.matchAll(/(?:\d+ \d+)/g)].map((line) => {
-  const [start, range] = line[0].split(" ")
+  const [start, range] = line[0].split(' ')
   return {
     start: parseInt(start),
     range: parseInt(range),

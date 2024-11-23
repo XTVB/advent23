@@ -1,5 +1,5 @@
-import path from "path"
-const day = path.basename(import.meta.file, ".ts")
+import path from 'path'
+const day = path.basename(import.meta.file, '.ts')
 console.log(`Day ${day}`)
 const input = await Bun.file(`./inputs/${day}.txt`).text()
 
@@ -32,7 +32,7 @@ XXX = (XXX, XXX)`
 
 const instrReg = /([RL]+)/g
 
-const directions = instrReg.exec(input)?.[0] ?? ""
+const directions = instrReg.exec(input)?.[0] ?? ''
 // console.log(directions)
 
 const nodeReg = /(?:(\w{3}) = \((\w{3}), (\w{3})\))/g
@@ -52,14 +52,14 @@ while ((nodeArray = nodeReg.exec(input)) !== null) {
 
 const nextNode = (nodes: Nodes, source: string, direction: string): string => {
   const { left, right } = nodes[source]
-  return direction === "L" ? left : right
+  return direction === 'L' ? left : right
 }
 
 const countSteps = (
   nodes: Nodes,
   directions: string,
-  startingNode: string = "AAA",
-  completeFn: (node: string) => boolean = (node: string) => node === "ZZZ",
+  startingNode: string = 'AAA',
+  completeFn: (node: string) => boolean = (node: string) => node === 'ZZZ',
 ): number => {
   let node = startingNode,
     count = 0,
@@ -77,7 +77,7 @@ const steps = countSteps(nodes, directions)
 
 console.log(`Answer Part A: ${steps}`)
 
-const startingNodes = Object.keys(nodes).filter((node) => node.endsWith("A"))
+const startingNodes = Object.keys(nodes).filter((node) => node.endsWith('A'))
 
 // console.log(startingNodes)
 
@@ -106,7 +106,7 @@ const gcd = (a: number, b: number): number => (a ? gcd(b % a, a) : b)
 const lcm = (a: number, b: number) => (a * b) / gcd(a, b)
 
 const ghostSteps = startingNodes.map((starting) =>
-  countSteps(nodes, directions, starting, (node: string) => node.endsWith("Z")),
+  countSteps(nodes, directions, starting, (node: string) => node.endsWith('Z')),
 )
 const stepsConvergeAt = ghostSteps.reduce(lcm)
 

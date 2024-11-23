@@ -1,7 +1,7 @@
-import path from "path"
-const day = path.basename(import.meta.file, ".ts")
+import path from 'path'
+const day = path.basename(import.meta.file, '.ts')
 console.log(`Day ${day}`)
-const lines = (await Bun.file(`./inputs/${day}.txt`).text()).split("\n")
+const lines = (await Bun.file(`./inputs/${day}.txt`).text()).split('\n')
 
 const convertToNum = (test: string): number => {
   const int = parseInt(test)
@@ -11,43 +11,43 @@ const convertToNum = (test: string): number => {
   }
 
   switch (test) {
-    case "one":
+    case 'one':
       return 1
-    case "two":
+    case 'two':
       return 2
-    case "three":
+    case 'three':
       return 3
-    case "four":
+    case 'four':
       return 4
-    case "five":
+    case 'five':
       return 5
-    case "six":
+    case 'six':
       return 6
-    case "seven":
+    case 'seven':
       return 7
-    case "eight":
+    case 'eight':
       return 8
-    case "nine":
+    case 'nine':
       return 9
     default:
       return 0
   }
 }
 
-const NUMS = ["one", "two", "three", "four", "five", "six", "seven", "eight", "nine"]
+const NUMS = ['one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine']
 const reg = /(\d)/g
 
 let useStrings = false
 
 const constructReg = () => {
-  return useStrings ? new RegExp(`(?=(\\d|${NUMS.join("|")}))`, "g") : /(\d)/g
+  return useStrings ? new RegExp(`(?=(\\d|${NUMS.join('|')}))`, 'g') : /(\d)/g
 }
 
 const firstNum = (line: string): number => {
-  return convertToNum([...line.matchAll(constructReg())].at(0)?.at(1) ?? "")
+  return convertToNum([...line.matchAll(constructReg())].at(0)?.at(1) ?? '')
 }
 const lastNum = (line: string): number => {
-  return convertToNum([...line.matchAll(constructReg())].at(-1)?.at(1) ?? "")
+  return convertToNum([...line.matchAll(constructReg())].at(-1)?.at(1) ?? '')
 }
 
 const firstAndLastNum = (line: string): number => {

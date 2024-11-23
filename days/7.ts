@@ -1,14 +1,14 @@
-import path from "path"
-import { isDefined } from "../utils/isDefined"
-const day = path.basename(import.meta.file, ".ts")
+import path from 'path'
+import { isDefined } from '../utils/isDefined'
+const day = path.basename(import.meta.file, '.ts')
 console.log(`Day ${day}`)
-const input = (await Bun.file(`./inputs/${day}.txt`).text()).split("\n")
+const input = (await Bun.file(`./inputs/${day}.txt`).text()).split('\n')
 
 const inputT = `32T3K 765
 T55J5 684
 KK677 28
 KTJJT 220
-QQQJA 483`.split("\n")
+QQQJA 483`.split('\n')
 
 enum Rank {
   HIGH_CARD,
@@ -23,21 +23,21 @@ enum Rank {
 const rankToString = (rank: Rank): string => {
   switch (rank) {
     case Rank.HIGH_CARD:
-      return "High Card"
+      return 'High Card'
     case Rank.PAIR:
-      return "Pair"
+      return 'Pair'
     case Rank.TWO_PAIR:
-      return "Two Pair"
+      return 'Two Pair'
     case Rank.THREE:
-      return "Three of a Kind"
+      return 'Three of a Kind'
     case Rank.FULL_HOUSE:
-      return "Full House"
+      return 'Full House'
     case Rank.FOUR:
-      return "Four of a Kind"
+      return 'Four of a Kind'
     case Rank.FIVE:
-      return "Five of a Kind"
+      return 'Five of a Kind'
     default:
-      return "Unknown Rank"
+      return 'Unknown Rank'
   }
 }
 
@@ -61,15 +61,15 @@ const countHand = (hand: string[]) => {
 
 const mapSymbol = (symbol: string, usingJokers: boolean): number => {
   switch (symbol) {
-    case "T":
+    case 'T':
       return 10
-    case "J":
+    case 'J':
       return usingJokers ? 0 : 11
-    case "Q":
+    case 'Q':
       return 12
-    case "K":
+    case 'K':
       return 13
-    case "A":
+    case 'A':
     default:
       return 14
   }
@@ -114,8 +114,8 @@ const rankHand = (hand: string[]): Rank => {
 }
 
 const hands: Hand[] = input.map((line) => {
-  const [handStr, bidStr] = line.split(" ")
-  const hand = handStr.split("")
+  const [handStr, bidStr] = line.split(' ')
+  const hand = handStr.split('')
   return {
     cards: hand,
     bid: parseInt(bidStr),
@@ -146,8 +146,8 @@ console.log(`Answer Part A: ${total}`)
 
 const rankHandFlex = (hand: string[]): Rank => {
   const handCount = countHand(hand)
-  const numberOfJokers = handCount["J"] ?? 0
-  delete handCount["J"]
+  const numberOfJokers = handCount['J'] ?? 0
+  delete handCount['J']
   const count = Object.values(handCount)
   if (count.length === 5) {
     return Rank.HIGH_CARD
@@ -169,8 +169,8 @@ const rankHandFlex = (hand: string[]): Rank => {
 }
 
 const flexHands: Hand[] = input.map((line) => {
-  const [handStr, bidStr] = line.split(" ")
-  const hand = handStr.split("")
+  const [handStr, bidStr] = line.split(' ')
+  const hand = handStr.split('')
   return {
     cards: hand,
     bid: parseInt(bidStr),

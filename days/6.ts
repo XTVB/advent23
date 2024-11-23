@@ -1,5 +1,5 @@
-import path from "path"
-const day = path.basename(import.meta.file, ".ts")
+import path from 'path'
+const day = path.basename(import.meta.file, '.ts')
 console.log(`Day ${day}`)
 const input = await Bun.file(`./inputs/${day}.txt`).text()
 
@@ -13,7 +13,7 @@ type RaceConstraint = {
   distance: number
 }
 
-const [timeStr, distanceStr] = input.split("\n")
+const [timeStr, distanceStr] = input.split('\n')
 const times = [...timeStr.matchAll(/\d+/g)].map((val) => parseInt(val[0]))
 const distances = [...distanceStr.matchAll(/\d+/g)].map((val) => parseInt(val[0]))
 const races: RaceConstraint[] = times.reduce(
@@ -48,8 +48,8 @@ console.log(`Answer Part A: ${marginOfError}`)
 // Dumb brute force method
 
 const bigRace: RaceConstraint = {
-  time: parseInt(times.join("")),
-  distance: parseInt(distances.join("")),
+  time: parseInt(times.join('')),
+  distance: parseInt(distances.join('')),
 }
 
 const bigMargin = waysToWin(bigRace)

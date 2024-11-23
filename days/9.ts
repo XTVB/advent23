@@ -1,13 +1,13 @@
-import path from "path"
-const day = path.basename(import.meta.file, ".ts")
+import path from 'path'
+const day = path.basename(import.meta.file, '.ts')
 console.log(`Day ${day}`)
-const input = (await Bun.file(`./inputs/${day}.txt`).text()).split("\n")
+const input = (await Bun.file(`./inputs/${day}.txt`).text()).split('\n')
 
 const inputT = `0 3 6 9 12 15
 1 3 6 10 15 21
-10 13 16 21 30 45`.split("\n")
+10 13 16 21 30 45`.split('\n')
 
-const sequences = input.map((str) => str.split(" ").map((val) => parseInt(val)))
+const sequences = input.map((str) => str.split(' ').map((val) => parseInt(val)))
 
 const diffs = (sequence: number[]) => {
   const diffs = sequence.map((val, index) => sequence[index + 1] - val)

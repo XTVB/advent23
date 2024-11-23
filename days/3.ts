@@ -1,7 +1,7 @@
-import path from "path"
-const day = path.basename(import.meta.file, ".ts")
+import path from 'path'
+const day = path.basename(import.meta.file, '.ts')
 console.log(`Day ${day}`)
-const lines = (await Bun.file(`./inputs/${day}.txt`).text()).split("\n")
+const lines = (await Bun.file(`./inputs/${day}.txt`).text()).split('\n')
 
 // console.log(lines);
 
@@ -26,7 +26,7 @@ const test = `.......5......
 ..............
 ..............
 21............
-...*9.........`.split("\n")
+...*9.........`.split('\n')
 
 // console.log(test);
 
@@ -42,7 +42,7 @@ type NumberCoOrd = {
 }
 
 // const matrix = test.map((text) => text.split(""));
-const matrix = lines.map((text) => text.split(""))
+const matrix = lines.map((text) => text.split(''))
 const get = (y: number, x: number): string => {
   return matrix[y]?.[x]
 }
@@ -70,7 +70,7 @@ const toNumber = ({ startX, endX, y }: NumberCoOrd): number => {
   for (let i = startX; i < endX + 1; i++) {
     collect.push(get(y, i))
   }
-  return parseInt(collect.join(""))
+  return parseInt(collect.join(''))
 }
 
 const partNumbers: NumberCoOrd[] = []
@@ -127,7 +127,7 @@ const gearRatios = []
 for (let y = 0; y < matrix.length; y++) {
   const line = matrix[y]
   for (let x = 0; x < line.length; x++) {
-    if (line[x] === "*") {
+    if (line[x] === '*') {
       const testGear: GearCoOrd = {
         gearX: x,
         gearY: y,

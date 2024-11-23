@@ -1,5 +1,6 @@
-import path from "path"
-const day = path.basename(import.meta.file, ".ts")
+import path from 'path'
+import { makeBlue, makeRed, makePurple, makeGreen, makeYellow, makeBlack } from '../utils/formatText'
+const day = path.basename(import.meta.file, '.ts')
 console.log(`Day ${day}`)
 const input = await Bun.file(`./inputs/${day}.txt`).text()
 
@@ -41,46 +42,46 @@ L---JF-JLJ.||-FJLJJ7
 L.L7LFJ|||||FJL7||LJ
 L7JLJL-JLJLJL--JLJ.L`
 
-const matrix = input.split("\n").map((row) => row.split(""))
-// console.log(matrix)
-
 enum Tile {
-  Vertical = "|",
-  Horizontal = "-",
-  BendNE = "L",
-  BendNW = "J",
-  BendSW = "7",
-  BendSE = "F",
-  Ground = ".",
-  Start = "S",
+  Vertical = '|',
+  Horizontal = '-',
+  BendNE = 'L',
+  BendNW = 'J',
+  BendSW = '7',
+  BendSE = 'F',
+  Ground = '.',
+  Start = 'S',
 }
+
+const matrix = input.split('\n').map((row) => row.split('')) as Tile[][]
+// console.log(matrix)
 
 const tileToString = (tile: Tile | string): string => {
   switch (tile) {
     case Tile.Vertical:
-    case "|":
-      return "Vertical"
+    case '|':
+      return 'Vertical'
     case Tile.Horizontal:
-    case "-":
-      return "Horizontal"
+    case '-':
+      return 'Horizontal'
     case Tile.BendNE:
-    case "L":
-      return "BendNE"
+    case 'L':
+      return 'BendNE'
     case Tile.BendNW:
-    case "J":
-      return "BendNW"
+    case 'J':
+      return 'BendNW'
     case Tile.BendSW:
-    case "7":
-      return "BendSW"
+    case '7':
+      return 'BendSW'
     case Tile.BendSE:
-    case "F":
-      return "BendSE"
+    case 'F':
+      return 'BendSE'
     case Tile.Ground:
-    case ".":
-      return "Ground"
+    case '.':
+      return 'Ground'
     case Tile.Start:
-    case "S":
-      return "Start"
+    case 'S':
+      return 'Start'
     default:
       throw new Error(`Unknown tile: ${tile}`)
   }
@@ -102,133 +103,80 @@ const findStart = (matrix: string[][]): Point => {
 const start = findStart(matrix)
 // console.log(start)
 
-const findStartDirection = (matrix: string[][], start: Point): string => {
-  let [x, y] = start
+const findStartDirection = (matrix: Tile[][], start: Point): string => {
+  const [x, y] = start
   const right = matrix[y]?.[x + 1]
   const left = matrix[y]?.[x - 1]
   const down = matrix[y + 1]?.[x]
   const up = matrix[y - 1]?.[x]
   // console.log(`Start: ${x},${y} ${stringToTile(right)} ${stringToTile(left)} ${stringToTile(down)} ${stringToTile(up)}`)
-  if (right === Tile.Horizontal || right === Tile.BendNW || right === Tile.BendSW) {
-    return "right"
+  if ([Tile.Horizontal, Tile.BendNW, Tile.BendSW].includes(right)) {
+    return 'right'
   }
-  if (left === Tile.Horizontal || left === Tile.BendNE || left === Tile.BendSE) {
-    return "left"
+  if ([Tile.Horizontal, Tile.BendNE, Tile.BendSE].includes(left)) {
+    return 'left'
   }
-  if (down === Tile.Vertical || down === Tile.BendSE || down === Tile.BendSW) {
-    return "down"
+  if ([Tile.Vertical, Tile.BendSE, Tile.BendSW].includes(down)) {
+    return 'down'
   }
-  if (up === Tile.Vertical || up === Tile.BendNE || up === Tile.BendNW) {
-    return "up"
+  if ([Tile.Vertical, Tile.BendNE, Tile.BendNW].includes(up)) {
+    return 'up'
   }
-  return ""
+  return ''
 }
 
-const makeBlack = (message: string) => {
-  return `\x1b[30m${message}\x1b[0m`
-}
-const makeRed = (message: string) => {
-  return `\x1b[31m${message}\x1b[0m`
-}
-const makeBlue = (message: string) => {
-  return `\x1b[34m${message}\x1b[0m`
-}
-const makeGreen = (message: string) => {
-  return `\x1b[32m${message}\x1b[0m`
-}
-const makeYellow = (message: string) => {
-  return `\x1b[33m${message}\x1b[0m`
-}
-const makePurple = (message: string) => {
-  return `\x1b[35m${message}\x1b[0m`
-}
-
-const logRed = (message: string) => {
-  console.log(makeRed(message))
-}
-
-const traverse = (matrix: string[][], start: Point): number[][] => {
+const traverse = (matrix: Tile[][], start: Point): number[][] => {
   let [x, y] = start
   let direction = findStartDirection(matrix, start)
   let path = [[x + 1, y + 1]]
   //   let path = 'S'
-  if (direction === "right") {
-    x++
+  const turn = (direction: string) => {
+    if (direction === 'right') {
+      x++
+    }
+    if (direction === 'left') {
+      x--
+    }
+    if (direction === 'down') {
+      y++
+    }
+    if (direction === 'up') {
+      y--
+    }
   }
-  if (direction === "left") {
-    x--
-  }
-  if (direction === "down") {
-    y++
-  }
-  if (direction === "up") {
-    y--
-  }
+  turn(direction)
   const makeMove = () => {
     switch (matrix[y][x]) {
       case Tile.Vertical:
         // console.log(`Vertical: ${x},${y} ${direction}`)
         matrix[y][x] = makeBlue(matrix[y][x])
-        if (direction === "down") {
-          y++
-        } else {
-          y--
-        }
         break
       case Tile.Horizontal:
         // console.log(`Horizontal: ${x},${y} ${direction}`)
         matrix[y][x] = makeBlue(matrix[y][x])
-        if (direction === "right") {
-          x++
-        } else {
-          x--
-        }
         break
       case Tile.BendNE:
         // console.log(`BendNE: ${x},${y} ${direction}`)
         matrix[y][x] = makeRed(matrix[y][x])
-        if (direction === "down") {
-          x++
-          direction = "right"
-        } else {
-          y--
-          direction = "up"
-        }
+        direction = direction === 'down' ? 'right' : 'up'
         break
       case Tile.BendNW:
         // console.log(`BendNW: ${x},${y} ${direction}`)
         matrix[y][x] = makePurple(matrix[y][x])
-        if (direction === "down") {
-          x--
-          direction = "left"
-        } else {
-          y--
-          direction = "up"
-        }
+        direction = direction === 'down' ? 'left' : 'up'
         break
       case Tile.BendSW:
         // console.log(`BendSW: ${x},${y} ${direction}`)
         matrix[y][x] = makeGreen(matrix[y][x])
-        if (direction === "up") {
-          x--
-          direction = "left"
-        } else {
-          y++
-          direction = "down"
-        }
+        direction = direction === 'up' ? 'left' : 'down'
         break
       case Tile.BendSE:
         // console.log(`BendSE: ${x},${y} ${direction}`)
         matrix[y][x] = makeYellow(matrix[y][x])
-        if (direction === "up") {
-          x++
-          direction = "right"
-        } else {
-          y++
-          direction = "down"
-        }
+        direction = direction === 'up' ? 'right' : 'down'
         break
     }
+    turn(direction)
   }
   // console.log(`Start: ${x},${y} ${direction}`)
   while (true) {

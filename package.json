@@ -5,6 +5,7 @@
   "scripts": {
     "next": "bun run utils/create.ts",
     "latest": "bun run utils/runLatest.ts",
+    "day": "bun run utils/runDay.ts",
     "all": "bun run utils/runAll.ts",
     "tidy": "bunx prettier --write ."
   },

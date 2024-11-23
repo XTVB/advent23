@@ -12,6 +12,12 @@ To run latest:
 bun latest
 ```
 
+To run specific day:
+
+```bash
+bun day :num:
+```
+
 To run all days:
 
 ```bash
@@ -22,4 +28,10 @@ To add new day boilerplate:
 
 ```bash
 bun next
+```
+
+To lint all files with prettier
+
+```bash
+bun tidy
 ```
