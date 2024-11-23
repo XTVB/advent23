@@ -1,5 +1,6 @@
 import path from 'path'
 import { makeBlue, makeRed, makePurple, makeGreen, makeYellow, makeBlack } from '../utils/formatText'
+import { Point, parseMatrix, printMatrix } from '../utils/matrix'
 const day = path.basename(import.meta.file, '.ts')
 console.log(`Day ${day}`)
 const input = await Bun.file(`./inputs/${day}.txt`).text()
@@ -53,7 +54,7 @@ enum Tile {
   Start = 'S',
 }
 
-const matrix = input.split('\n').map((row) => row.split('')) as Tile[][]
+const matrix = parseMatrix<Tile>(input)
 // console.log(matrix)
 
 const tileToString = (tile: Tile | string): string => {
@@ -86,8 +87,6 @@ const tileToString = (tile: Tile | string): string => {
       throw new Error(`Unknown tile: ${tile}`)
   }
 }
-
-type Point = [number, number]
 
 const findStart = (matrix: string[][]): Point => {
   for (let y = 0; y < matrix.length; y++) {
@@ -197,7 +196,7 @@ const traverse = (matrix: Tile[][], start: Point): number[][] => {
 const route = traverse(matrix, start)
 
 const furthest = Math.round(route.length / 2)
-// console.log(matrix.map((row) => row.join("")).join("\n"))
+// printMatrix(matrix)
 
 console.log(`Answer Part A: ${furthest}`)
 
