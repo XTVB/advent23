@@ -1,4 +1,4 @@
-type Point = [number, number]
+type Point = [x: number, y: number]
 
 const parseMatrix = <T>(matrix: string): T[][] => {
   return matrix.split('\n').map((row) => row.split('')) as T[][]
