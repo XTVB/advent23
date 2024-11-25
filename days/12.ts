@@ -59,7 +59,7 @@ const groupsReg = /(#+)/g
 const fulfillsConfig = (cogs: string, config: number[]) =>
   arrayCompare(
     [...cogs.matchAll(groupsReg)].map((m) => m[1].length),
-    config
+    config,
   )
 
 const tryValue = (cogs: string, remainingFlex: number, config: number[]): number => {
