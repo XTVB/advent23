@@ -7,6 +7,7 @@
     "latest": "bun run utils/runLatest.ts",
     "day": "bun run utils/runDay.ts",
     "all": "bun run utils/runAll.ts",
+    "check": "bun run utils/checkMissing.ts",
     "tidy": "bunx prettier --write ."
   },
   "devDependencies": {

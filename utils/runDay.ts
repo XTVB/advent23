@@ -1,8 +1,6 @@
 import latestDay from './getLatest'
 const day = parseInt(Bun.argv[2])
 
-console.log(day)
-
 if (isNaN(day) || day < 1 || day > latestDay()) {
   console.log(`Invalid day: ${day}`)
 } else {

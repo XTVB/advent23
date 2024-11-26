@@ -73,11 +73,11 @@ const tryValue = (cogs: string, remainingFlex: number, config: number[]): number
 
 const enumerateCogs = (cogs: string, config: number[]) => tryValue(cogs, countFlex(cogs), config)
 
-// const possibleArrangements = conditions
-//   .map((condition) => enumerateCogs(condition.cogs, condition.config))
-//   .reduce((total, current) => total + current, 0)
+const possibleArrangements = conditions
+  .map((condition) => enumerateCogs(condition.cogs, condition.config))
+  .reduce((total, current) => total + current, 0)
 
-// console.log(`Answer Part A: ${possibleArrangements}`)
+console.log(`Answer Part A: ${possibleArrangements}`)
 
 // Part B
 // no longer possible to enumerate, gonna have to be a bit more clever

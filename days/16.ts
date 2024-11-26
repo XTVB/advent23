@@ -31,7 +31,7 @@ const updateTrackingMatrixes = (
   direction: Direction,
   arrowMatrix: (Cell | Direction | string)[][],
   energyMatrix: ('#' | Cell)[][],
-  entered: Map<string, boolean>
+  entered: Map<string, boolean>,
 ) => {
   const [x, y] = point
   if (x < 0 || y < 0 || x >= matrix[0].length || y >= matrix.length) {
@@ -114,7 +114,7 @@ const move = (
   direction: Direction,
   arrowMatrix: (Cell | Direction | string)[][],
   energyMatrix: ('#' | Cell)[][],
-  entered: Map<string, boolean>
+  entered: Map<string, boolean>,
 ) => {
   //   console.log(position, direction)
   position = nextPosition(position, direction)
@@ -133,7 +133,7 @@ const energisedFromThisPath = (
   energyMatrix: ('#' | Cell)[][],
   entered: Map<string, boolean>,
   start: Point = [0, 0],
-  startingDirection: Direction = Direction.Right
+  startingDirection: Direction = Direction.Right,
 ): number => {
   let position = start
   let directions = nextDirection(matrix[position[1]][position[0]], startingDirection)
@@ -178,7 +178,7 @@ const bestCharge = getStartingOptions(matrix).reduce((max, [x, y, direction]) =>
     energyMatrix,
     entered,
     [x as number, y as number],
-    direction as Direction
+    direction as Direction,
   )
   return Math.max(max, charge)
 }, 0)
