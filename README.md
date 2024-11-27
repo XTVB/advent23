@@ -24,7 +24,7 @@ To run all days:
 bun all
 ```
 
-To add new day boilerplate:
+To add new day boilerplate (`export AOC_SESSION_KEY=<session-cookier>` to import your specific input):
 
 ```bash
 bun next

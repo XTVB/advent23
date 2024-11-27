@@ -9,5 +9,7 @@ const input = `broadcaster -> a, b, c
 %c -> inv
 &inv -> a`
 
+
+
 // console.log(`Answer Part A: ${totalA}`)
 // console.log(`Answer Part B: ${totalB}`)

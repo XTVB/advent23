@@ -137,7 +137,11 @@ const buildConstraints = (workflow: string, constraints: Constraint[] = []) => {
   }
   for (const rule of rules) {
     const { key, operator, threshold, destination } = rule
-    let newConstraints = key !== '*' ? [...constraints, { key, operator, threshold }] : [...constraints]
+    let newConstraints =
+      // bug was here: thresholds need adjusting for the non-destination
+      key !== '*'
+        ? [...constraints, { key, operator, threshold: operator === '<' ? threshold - 1 : threshold + 1 }]
+        : [...constraints]
     if (key !== '*') {
       constraints.push({ key, operator: operator === '<' ? '>' : '<', threshold })
     }
@@ -166,10 +170,12 @@ const reducePossibility = (possibility: Possibility, constraint: Constraint) => 
   const range = possibility[key]
   switch (operator) {
     case '>':
-      range.min = Math.max(range.min, threshold + 1)
+      // bug was here: dont modify the threshold for the non-destination
+      range.min = Math.max(range.min, threshold)
       break
     case '<':
-      range.max = Math.min(range.max, threshold - 1)
+      // bug was here: dont modify the threshold for the non-destination
+      range.max = Math.min(range.max, threshold)
       break
   }
 }
@@ -202,7 +208,7 @@ const getThresholds = (constraints: Constraint[]): number => {
 // console.log(globalConstraints.map(getPossibility))
 // console.log(globalConstraints.map(getThresholds).reduce((total, num) => total + num, 0))
 
-// second attempt at part B
+// second attempt at part B (both attempts had similar bugs, both fixed now)
 
 const validPossibilities: Possibility[] = []
 const followPath = (possibility: Possibility, workflow: string) => {
